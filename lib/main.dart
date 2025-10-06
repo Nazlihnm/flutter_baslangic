@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp()); // Tek runApp() buraya
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -10,65 +10,74 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sayac',
-      debugShowCheckedModeBanner: false, // Debug banner kaldırıldı
-      theme: ThemeData(),
-      home: const MyHomePage(title: 'SAYAÇ UYGULAMASI'),
+      theme: ThemeData(fontFamily: 'AlanSans'),
+      title: 'Flutter Widget Antrenmanı',
+      debugShowCheckedModeBanner: false,
+      home: const WidgetAntrenmani(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class WidgetAntrenmani extends StatefulWidget {
+  const WidgetAntrenmani({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<WidgetAntrenmani> createState() => _WidgetAntrenmaniState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _WidgetAntrenmaniState extends State<WidgetAntrenmani> {
+  Color _arkaPlanRengi = Colors.white;
+  bool _morMu = false;
 
-  void _incrementCounter() {
+  void _rengiDegistir() {
     setState(() {
-      _counter++;
+      _morMu = !_morMu;
+      _arkaPlanRengi = _morMu ? Colors.deepPurple : Colors.indigo;
     });
+  }
+
+  void _mesajGoster(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Merhaba Flutter 🚀'),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _arkaPlanRengi,
       appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: const Color.fromARGB(255, 224, 177, 233),
+        title: const Text('Flutter Widget Antrenmanı'),
+        backgroundColor: Colors.deepPurple,
       ),
-      body: Container(
-        color: Color.fromARGB(255, 150, 79, 142),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Nazli Hanim Keles',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // arka plan koyuysa okunaklı olur
-                ),
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Hoş Geldin Flutter!',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            // Resim (Network örneği)
+            Image.asset('assets/fonts/images/logo.png', width: 200),
+            const SizedBox(height: 30),
+            // ElevatedButton
+            ElevatedButton(
+              onPressed: _rengiDegistir,
+              child: const Text('Arka plan rengini değiştir'),
+            ),
+            const SizedBox(height: 15),
+            // IconButton
+            IconButton(
+              icon: const Icon(Icons.message, size: 32, color: Colors.black87),
+              onPressed: () => _mesajGoster(context),
+            ),
+          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
